@@ -1,11 +1,10 @@
 # -*- coding:utf-8 -*-
 
+import os.path
+
+import pytesseract
 from PIL import Image
 from pylab import *
-import numpy as np
-import pytesseract
-import os.path
-import os
 
 
 def imgToArry():
@@ -58,7 +57,7 @@ def saveSmall(url, newurl=33):
     im1 = Image.open(url)
     im2 = im1.crop((110, 375, 900, 580))
     im2.save(newurl)
-    os.system('rm -rf ' + url.replace('x.png','*'))
+    os.system('rm -rf ' + url.replace('x.png', '*'))
 
 
 def go():
@@ -76,5 +75,12 @@ def go():
                     saveSmall(url, smalUrl)
 
 
+def test():
+    print("gg")
+    im1 = Image.open('data/1490861838689_x_yes.png')
+    t = np.array(array(im1))
+    print(t)
+
+
 if __name__ == '__main__':
-    go()
+  print(33)

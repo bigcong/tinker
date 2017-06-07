@@ -1,8 +1,7 @@
 import os
 import time
+
 import axe
-import datetime
-from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 def go():
