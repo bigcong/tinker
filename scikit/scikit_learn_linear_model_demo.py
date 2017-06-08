@@ -14,13 +14,21 @@ def createData():
         x1.append([index])
     y1 = np.array(x1) + noise
     print(y1)
-    return x1,y1
+    return x1, y1
 
 
 def createData1():
     x = [[1], [2], [3], [4], [5], [6]]
     y = [[1], [2.1], [2.9], [4.2], [5.1], [5.8]]
     return x, y
+
+
+# 准备数据
+def createData2():
+    x1 = np.random.randint(100, size=(10))
+
+    y1 = np.array(x1) * 2 + 1
+    return x1, y1
 
 
 # 打印数据
@@ -45,12 +53,27 @@ def fit(x1, y1):
     return mode;
 
 
-if __name__ == '__main__':
+def test():
+    x, y = createData2()
+    print(x)
+    print(y)
+    a = np.var(x, ddof=1)  # 方差计算
+    b = np.cov(x, y)[0][1]  # 协方差计算
+    c = b / a
 
-    x1, y1 = createData()
-    mode = LinearRegression()
-    mode.fit(x1, y1)
-    mode = fit(x1, y1)
-    x2 = np.random.randint(20,size=(5,1))
-    y2 = mode.predict(x2)  # 预测数据y轴
-    plot(x1, y1,x2,y2)
+    d = y[0] - c * x[0]
+    print(d)
+
+
+def test2():
+    x, y = createData1()
+    model = LinearRegression()
+    model.fit(x, y)
+    x2 = [[0], [2.5], [5.3], [9.1]]
+    y2 = model.predict(x2)
+    gg = model.score(x2, y2)
+    print(gg)  #
+
+
+if __name__ == '__main__':
+    test()
