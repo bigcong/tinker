@@ -1,7 +1,7 @@
 import re
-import requests
-import os
 import threading
+import  os
+import requests
 
 
 def go(url):
@@ -15,17 +15,19 @@ def test(gg=33):
 
 
 if __name__ == '__main__':
-    r = requests.get('http://v.youku.com/v_show/id_XMjY3MTQ2MDE0OA==.html?spm=a2h0j.8191423.item_XMjY3MTQ2MDE0OA==.A')
+    r = requests.get('http://list.youku.com/albumlist/show/id_49354991.html?spm=a2h0k.8191403.0.0&sf=10100')
 
     myPage = r.content.decode("utf8")
     print(myPage)
-    mm = re.findall('<a class="sn"  href="(.*?)"', myPage)
+
+    # <a href="(.*?)" title="莫烦
+
+    mm = re.findall('<div class="p-thumb"><a href="(.*?)" title="', myPage)
     i = 0;
 
     for u in mm:
         url = 'http:' + u
 
         print(url)
-        if i == 28:
-            threading.Thread(target=go(url)).start()
-        i=i+1
+
+        threading.Thread(target=go(url)).start()
