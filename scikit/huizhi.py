@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.font_manager import FontProperties
 
 """
 绘制一元函数图像y=ax+b
@@ -70,5 +70,25 @@ def test4():
     plt.show()
 
 
-if __name__ == '__main__':
-    test4()
+def test5():
+    plt.figure()
+    plt.title("一元二次方程", fontproperties=getChineseFont())
+    plt.xlabel("x轴")
+    plt.ylabel("y轴")
+    plt.axis([-100, 100, 0, 100])
+    plt.grid(True)  # 是否绘制网格线
+    xx = np.linspace(-100, 100, 1000)  # 在-12到12之间生成1000个点的向量
+    print(xx.shape)
+    yy=xx*xx+2*xx+1
+    print(yy)
+
+    plt.plot(xx, yy, 'g-', label="$sin(x)$")  # 绘制y=sin(x)图像，颜色green，形式为线条
+    plt.show()
+
+
+def getChineseFont():
+    return FontProperties(fname='/System/Library/Fonts/PingFang.ttc')
+
+
+
+
