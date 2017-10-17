@@ -29,20 +29,25 @@ for f in files:
     else:
         y.append(0)
 
-    data = io.imread(image)
+    data = io.imread(image).reshape(205*790*4)
+
+
     x.append(data)
+
 
 model.fit(x, y)
 
 testFiles = os.listdir(dir + '/test')
 for f in testFiles:
     image = dir + "test/" + f
+
     sy = 0
+    print(image)
     if (f.find("yes") > 0):
         sy = 1
     else:
-        sy = 1
+        sy = 0
 
-    xdata = io.imread(image)
+    xdata = io.imread(image).reshape(205*790*4)
     py = model.predict(xdata)
-    print("预测为："+py+"，实际为："+sy)
+    print(py[0],sy)
