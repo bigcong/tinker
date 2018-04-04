@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from matplotlib.font_manager import FontProperties
-from  sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression
 
 
 # 准备数据
