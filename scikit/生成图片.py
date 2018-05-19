@@ -1,3 +1,5 @@
+import collections
+
 import requests
 import base64
 import os
@@ -43,34 +45,54 @@ def clear_noise(image):
                 draw.point((x, y), color)
 
 
-def iamge2imbw(image, threshold):
-    # 设置二值化阀值
-    table = []
-    for i in range(256):
-        if i < threshold:
-            table.append(0)
-        else:
-            table.append(1)
+def iamge2imbw(img, inde=1):
+    """传入image对象进行灰度、二值处理"""
+    img = img.convert("L")  # 转灰度
+    pixdata = img.load()
+    w, h = img.size
+    # 遍历所有像素，大于阈值的为黑色
+    total = 0
+    a = 0;
+    b = 1;
 
-    # 像素值变为0,1
-    image = image.point(table, '1')
+    gg = []
+    for y in range(h):
+        for x in range(w):
+            gg.append(pixdata[x, y])
 
-    # 像素值变为0,255
-    image = image.convert('L')
-    return image
+    g = collections.Counter(gg)
+
+    threshold = list(g.most_common())[inde][0]
+
+    for y in range(h):
+        for x in range(w):
+            if pixdata[x, y] != threshold:
+                pixdata[x, y] = 255
+                a = a + 1
+
+            else:
+                pixdata[x, y] = 0
+                b = b + 1;
+
+    if (b / a) < 0.05:
+        print("阀值为：" + str(threshold));
+        print(g)
+
+    return img, b / a
 
 
-for i in range(1000):
+def create():
+    for i in range(1000):
+        r = requests.post('http://192.168.0.138:3010/sysUser/getimg')
+        t = str(int(time.time() * 1000))
 
-    r = requests.get('http://192.168.0.138:8888/dfc/user/getimg')
-    t = str(int(time.time()*1000))
+        IMGCode = r.json()['attachment']['IMGCode']
+        codeUUID = r.json()['attachment']['codeUUID']
+        imgdata = base64.b64decode(IMGCode)
+        filename = os.popen('redis-cli -h 192.168.0.138  get  IMG' + codeUUID).read().strip() + '_' + t + '.jpg'
+        print(filename)
 
-    IMGCode = r.json()['attachment']['IMGCode']
-    codeUUID = r.json()['attachment']['codeUUID']
-    imgdata = base64.b64decode(IMGCode)
-    filename = os.popen('redis-cli -h 192.168.0.138  get  IMG' + codeUUID).read().strip() + '_' + t + '.jpg'
+        file = open('../data/verify_code/' + filename, 'wb')
 
-    file = open('../data/verify_code/' + filename, 'wb')
-
-    file.write(imgdata)
-    file.close()
+        file.write(imgdata)
+        file.close()
