@@ -12,6 +12,7 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from scikit.图片识别测试 import createData1
 from scikit.生成图片 import iamge2imbw
 from sklearn import preprocessing
+import matplotlib.pyplot as plt
 
 
 # 获取图片
@@ -33,11 +34,11 @@ def train():
     return knn, scaler
 
 
-def score():
+def score(n_neighbors=3):
     X, y = createData1()
     preprocessing.scale(X)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
-    knn = neighbors.KNeighborsClassifier()
+    knn = neighbors.KNeighborsClassifier(n_neighbors=n_neighbors)
     knn.fit(X_train, y_train)
     print(knn.score(X_test, y_test))
 
@@ -138,7 +139,19 @@ def train_real():
             dms[i].save('../data/single_code/' + vercode[i] + '_' + codeUUID + str(i) + ".jpg");
 
 
+def pp():
+    k_scores = []
+
+    x, y = createData1()
+    for k in range(1, 30):
+        knn = neighbors.KNeighborsClassifier(n_neighbors=k)
+        scores = cross_val_score(knn, x, y, cv=10, scoring='accuracy')  # for classification
+        k_scores.append(scores.mean())
+    plt.plot(range(1, 30), k_scores)
+    plt.xlabel('Value of K for KNN')
+    plt.ylabel('Cross-Validated Accuracy')
+    plt.show()
+
+
 if __name__ == '__main__':
     score()
-
-# spit()
