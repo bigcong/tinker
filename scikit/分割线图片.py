@@ -39,4 +39,3 @@ def spilt():
 
     print(cout / (len(lists) * 5))
 
-# dm.show()

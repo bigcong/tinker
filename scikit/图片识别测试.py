@@ -7,17 +7,17 @@ import sklearn
 from sklearn.datasets import load_iris
 
 
-def createData1():
+def createData1(path='../data/single_code/'):
     xx = []
     yy = []
-    path = '../data/single_code/'
     lists = os.listdir(path)  # 列出目录的下所有文件和文件夹保存到lists
+    lists.sort()
     for i in lists:
         im = Image.open(path + i)
         data = im.getdata()
-        data = np.matrix(data, dtype='float') / 225  # 转换成矩阵
+        # data = np.matrix(data, dtype='float') / 225  # 转换成矩阵
         yy.append(i.split("_")[0])
-        xx.append(np.array(data)[0])
+        xx.append(data)
     return xx, yy
 
 

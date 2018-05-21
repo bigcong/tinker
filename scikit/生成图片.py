@@ -82,7 +82,7 @@ def iamge2imbw(img, inde=1):
 
 
 def create():
-    for i in range(1000):
+    for i in range(100):
         r = requests.post('http://192.168.0.138:3010/sysUser/getimg')
         t = str(int(time.time() * 1000))
 
